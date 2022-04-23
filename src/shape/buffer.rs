@@ -178,9 +178,10 @@ impl Buffer {
     #[inline(always)]
     fn push_char(&mut self, ch: &Char) {
         let cluster = self.next_cluster;
+        let ignorable = if ch.ch == '\t' { false } else { ch.ignorable };
         self.glyphs.push(GlyphData {
             id: ch.glyph_id,
-            flags: (ch.ignorable as u16) << 6,
+            flags: (ignorable as u16) << 6,
             class: 0,
             char_class: ch.shape_class,
             joining_type: ch.joining_type as u8,

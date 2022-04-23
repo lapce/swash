@@ -68,7 +68,12 @@ where
         } else {
             match self.kind() {
                 CN => {
-                    self.accept_any_as(ShapeClass::Control)?;
+                    if self.s.cur.ch == '\t' {
+                        self.cluster.info_mut().set_space(Whitespace::Tab);
+                        self.accept_any()?;
+                    } else {
+                        self.accept_any_as(ShapeClass::Control)?;
+                    }
                 }
                 LF => {
                     self.cluster.info_mut().set_space(Whitespace::Newline);
